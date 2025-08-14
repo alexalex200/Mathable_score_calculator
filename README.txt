@@ -1,20 +1,70 @@
-Your project should include a README file containing the following information:
+# Board Game Piece Detection and Recognition using Template Matching
 
-1. the libraries required to run the project including the full version of each library
+This project implements a complete computer vision pipeline for detecting and recognizing pieces on a board game from sequential images of the gameplay.  
+The recognition step is performed using **OpenCV Template Matching**, ensuring that each detected piece is compared against a set of predefined reference images.
 
-numpy==2.1.3
-opencv_python==4.10.0.84
+## Project Description
 
-2. how to run each task and where to look for the output file.
+The workflow begins by processing a game image to locate and extract the board.  
+The board is detected through contour analysis and a perspective transformation is applied to obtain a perfect square view.  
+After cropping away irrelevant borders, the board is resized and divided into individual squares.
 
-Pentru rulare trebuie schimbata calea de la randul 223 din fisierul main.py cu calea catre jocurile pe care vreti sa le testati
+When a new image is processed, the algorithm detects which square has changed compared to the previous image. The contents of that square are isolated, cleaned using morphological operations, and matched against stored templates of known pieces.
 
-La randul 224 se poate schimba numarul de jocuri pe care vreti sa le testati
+The **`cv.matchTemplate`** function with `cv.TM_SQDIFF_NORMED` is used to measure similarity between the detected piece and each template, selecting the closest match.  
+This process is repeated for all moves in the game, updating the internal board state and calculating scores based on game rules.
 
-Rezultatul va fi salvat in directorul 462_Anca_Alexandru sub forma 'nr_joc'_'nr_mutare'.txt pentru piesa dintr un joc si 'nr_joc'_scores.txt pentru scorurile jocului
+## How It Works
 
-Fisierul imagini_auxiliare contine imaginile folosite pentru a extrage sabloanele pentru toate piesele si imagini cu tabla de joc fara piese
+1. **Board Detection**  
+   - Convert image to HSV, mask out irrelevant regions.
+   - Find the largest contour and extract its corners.
+   - Apply a perspective transformation for a top-down view.
+   - Remove margins and resize to standard dimensions.
 
-Fisierul piese contine sabloanele pentru toate piesele aranjate in directoare pentru fiecare numar din jocul de Mathable(daca acest fiser nu exista, se va decomenta linia 217)
+2. **Piece Template Preparation**  
+   - From reference images of the board, crop all known pieces.
+   - Save them in organized folders, each corresponding to a specific piece index.
 
+3. **Move Detection**  
+   - Compare the current board image to the previous one.
+   - Identify the square that has changed the most (based on mean pixel difference).
 
+4. **Piece Recognition via Template Matching**  
+   - Clean the extracted square using thresholding, blurring, and edge detection.
+   - Compare the result against relevant templates using `cv.matchTemplate`.
+   - Select the template with the lowest difference score.
+
+5. **Score Calculation**  
+   - Based on the recognized piece index and game rules (operators and multipliers from the predefined map), update the score.
+
+## Usage
+
+1. Install dependencies:
+   ```bash
+   pip install opencv-python numpy
+   ```
+2. Prepare the `imagini_auxiliare/` folder with reference board images and the `testare/` folder with gameplay frames and turn files.
+3. Run the main script:
+   ```bash
+   python main.py
+   ```
+4. Output:
+   - Individual text files for each detected move (`<game>_<move>.txt`).
+   - Score files summarizing the results (`<game>_scores.txt`).
+
+## Demonstration
+
+You can include a video showcasing the step-by-step process:  
+```
+[![Watch the video](results/thumbnail.png)](https://link-to-your-video.com)
+```
+Or provide a local `.mp4` file in the repository and reference it in the README.
+
+## Notes
+
+- Accuracy depends heavily on lighting conditions and template quality.
+- Templates should be captured from the same perspective and lighting as the test images for best results.
+
+---
+**Author:** Anca Alexandru-Iulian  
