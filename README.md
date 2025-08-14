@@ -55,16 +55,13 @@ This process is repeated for all moves in the game, updating the internal board 
 
 ## Demonstration
 
-You can include a video showcasing the step-by-step process:  
 ```
-[![Watch the video](results/thumbnail.png)](https://link-to-your-video.com)
+[![Watch the video](demo_animation.gif)]
 ```
-Or provide a local `.mp4` file in the repository and reference it in the README.
 
 ## Notes
 
 - Accuracy depends heavily on lighting conditions and template quality.
 - Templates should be captured from the same perspective and lighting as the test images for best results.
 
----
-**Author:** Anca Alexandru-Iulian  
+--- 
