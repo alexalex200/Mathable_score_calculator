@@ -55,7 +55,7 @@ This process is repeated for all moves in the game, updating the internal board 
 
 ## Demonstration
 
-[![Watch the video](demo_animation.gif)]
+![Watch the video](demo_animation.gif)
 
 ## Notes
 
